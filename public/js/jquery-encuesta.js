@@ -1,15 +1,9 @@
 var progessBar = $('#progressbar');
 var divContenedor = $('#msform');
+var formEnviar = $('#msform');
 
 var socket = io();
 
-var requestRespuestas = {
-
-    "nombre": "",
-    "respuesta": "",
-    "pregunta": ""
-
-}
 
 /*function obtenerPreguntas() {
 
@@ -93,11 +87,6 @@ function renderizarPreguntas(resp) {
 
     divContenedor.append(html);
 
-    var formEnviar = $('#msform');
-    formEnviar.on('submit', function(e) {
-        e.preventDefault();
-        guardarRespuestas();
-    });
 
 };
 
@@ -113,18 +102,32 @@ function renderizarSitio(resp) {
 //guardar respuestas
 function guardarRespuestas() {
 
-    var objeto = [];
+    var respuestasArray = [];
     var nombre = getQueryVariable('nombre');
     var respuestas = document.getElementsByName('CAT_Custom');
+    console.log('objeto sin datos', respuestasArray);
+
     for (var i = 0; i < respuestas.length; i++) {
+
+        var requestRespuestas = {
+
+            "nombre": "",
+            "respuesta": "",
+            "pregunta": ""
+
+        }
+
         requestRespuestas.nombre = nombre;
         requestRespuestas.respuesta = respuestas[i].value;
         requestRespuestas.pregunta = respuestas[i].getAttribute('data-id');
-        objeto.push(requestRespuestas);
-        json = {
-            "respuestas": objeto
-        }
+        respuestasArray.push(requestRespuestas);
     }
+
+    json = {
+        "respuestas": respuestasArray
+    }
+
+    console.log(json);
 
     socket.emit('guardarRespuesta', json, function(resp) {
 
@@ -138,3 +141,13 @@ function guardarRespuestas() {
 
 
 obtenerPreguntas();
+
+
+formEnviar.on('submit', function(e) {
+    e.preventDefault();
+    guardarRespuestas();
+
+    $('.submit').parent().fadeOut(1000)
+    $('.fs-subtitle-thanks').parent().fadeIn(1000)
+
+});

@@ -41,11 +41,9 @@ io.on('connection', (client) => {
 
         guardarRespuestas(data)
             .then(resp => {
-                console.log(resp);
                 callback(resp);
             })
             .catch(err => {
-                console.log(err);
                 callback(err);
             })
     })

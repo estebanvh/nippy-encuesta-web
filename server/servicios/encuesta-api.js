@@ -28,7 +28,6 @@ let guardarRespuestas = async(data) => {
     try {
 
         let resp = await axios.post(recurso, data);
-        console.log("respuesta:", resp.data);
         return resp.data;
 
     } catch (error) {

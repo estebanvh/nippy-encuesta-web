@@ -15,6 +15,7 @@ let ruta = path.resolve(__dirname, '../public');
 app.use(express.static(ruta));
 
 const io = socketIO(server);
+
 io.on('connection', (client) => {
 
     client.on('obtenerPreguntas', (callback) => {
@@ -23,14 +24,17 @@ io.on('connection', (client) => {
         obtenerEncuesta({ activa: true })
             .then((resp) => {
 
-                console.log(resp);
+                console.log(`fecha: [${new Date()}]`, resp);
                 if (!resp.ok) {
                     return callback(resp)
                 }
 
                 obtenerPreguntas(resp.encuestas[0]._id)
-                    .then(resp => callback(resp))
-                    .catch(err => callback(err))
+                    .then(resp => {
+                        console.log(`fecha: [${new Date()}]`, resp);
+                        return callback(resp)
+                    })
+                    .catch(err => { return callback(err) })
 
             })
             .catch(err => callback(err));
@@ -41,7 +45,8 @@ io.on('connection', (client) => {
 
         guardarRespuestas(data)
             .then(resp => {
-                callback(resp);
+                console.log(`fecha: [${new Date()}]`, resp);
+                return callback(resp);
             })
             .catch(err => {
                 callback(err);

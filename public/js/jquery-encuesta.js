@@ -28,6 +28,7 @@ function obtenerPreguntas() {
     socket.emit('obtenerPreguntas', function(resp) {
         renderizarSitio(resp);
         eventListener();
+        $('body').fadeIn(300);
     })
 
 }

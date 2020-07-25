@@ -56,5 +56,5 @@ io.on('connection', (client) => {
 });
 
 server.listen(process.env.PORT, () => {
-    console.log('servidor arriba');
+    console.log('servidor arriba', process.env.PORT);
 })
